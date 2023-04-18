@@ -26,7 +26,7 @@ Settings = {
     invis = true, -- Determines whether your invisible or not, a good alternitive to carry mode so you dont get queued with a lot of people
     waittime = .2, -- the time it waits after it loads
     SeeStats = true; -- This should show you your stats at all times
-    BoostFPS = true; 
+    BoostFPS = true; -- This will make the game look ugly, but more fluid
 
         OutputChange = false, -- changes output when low ki
         Amount = 100 -- the amount will be left doesnt go lower than 5, in intervals of 5 aswell 100, 95, 90, 85, ect...
