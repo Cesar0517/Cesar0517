@@ -1,32 +1,32 @@
-Move1 = ""
-Move2 = ""
-Move3 = ""
-Move4 = "GOD Hakai"
-Move5 = "Sudden Storm"
-Move6 = "Burning Blast"
-Move7 = "GOD Wrath"
-Move8 = "Blaster Meteor"
-Move9 = "Demon Flash"
-Move0 = "Big Bang Kamehameha"
+Move1 = "Anger Rush"
+Move2 = "Meteor Crash"
+Move3 = "Deadly Dance"
+Move4 = "TS Molotv"
+Move5 = "Wolf Fang Fist"
+Move6 = "Neo Wolf Fang Fist"
+Move7 = "God Slicer"
+Move8 = "Spirit Bomb Slicer"
+Move0 = "God Wrath"
+Move10 = "Blaster Meteor"
 Settings = {
     Earth = false, -- determines if you go to earth to queue or queue world
     AntiLeach = false, -- rejoins you if somebody is in your broly
     AutoPunch = true, -- auto punches broly if you run out of ki
-    DoubleFreeze = false, -- freezes your double exp, you can transform if this is on
+    DoubleFreeze = true, -- freezes your double exp, you can transform if this is on
     TeamDamage = false, -- you can kill other auto broliers if they grab broly
-    CarryMode = false, -- makes you non invis, and you are only on the first pad
+    CarryMode = true, -- makes you non invis, and you are only on the first pad
     BrolyCamera = false, -- Makes your camera track broly, kinda buggy
-    LateTransform = true, -- for androids, transforms when ki is at 70%
+    LateTransform = false, -- for androids, transforms when ki is at 70%
     Promotepls = true, -- just promotes my discord
     forms = false, -- turn this on for forms, turn off for androids
     RejoinTime = 15, -- rejoins in broly if this time is exceeded
     GrabChecker = 12, -- time it takes for broly to be last form, rejoins you if hes not by then
-    FirstForm = 0, -- the time it takes for brolies Super Saiyan form, this helps a little bit if you are grabbed
+    FirstForm = 9, -- the time it takes for brolies Super Saiyan form, this helps a little bit if you are grabbed
     AnimateFreeze = true, -- Breaks your animator but youre still allowed to attack
-    invis = true, -- Determines whether your invisible or not, a good alternitive to carry mode so you dont get queued with a lot of people
-    waittime = .2, -- the time it waits after it loads
+    invis = false, -- Determines whether your invisible or not, a good alternitive to carry mode so you dont get queued with a lot of people
+    waittime = .15, -- the time it waits after it loads
     SeeStats = true; -- This should show you your stats at all times
-    BoostFPS = true; -- This will make the game look ugly, but more fluid
+    BoostFPS = false; -- This will make the game look ugly, but more fluid
 
         OutputChange = false, -- changes output when low ki
         Amount = 100 -- the amount will be left doesnt go lower than 5, in intervals of 5 aswell 100, 95, 90, 85, ect...
@@ -418,7 +418,7 @@ if game.PlaceId == Ids[3] then
             game:GetService("RunService").RenderStepped:connect(
                 function()
                     game:GetService("Players")[Client.name].PlayerGui.HUD.Bottom.SP.Visible = true
-                    Client.PlayerGui.HUD.Bottom.SP.Text = "Cake Broly | Level : " .. Client.PlayerGui.HUD.Bottom.Stats.LVL.Val.Text .. " | Time : " .. math.floor(Workspace.DistributedGameTime) .. " / " .. Settings.RejoinTime .. " | Broly Health : " .. math.floor(Workspace.Live["Broly BR"].Humanoid.Health)
+                    Client.PlayerGui.HUD.Bottom.SP.Text = "Kx | Level : " .. Client.PlayerGui.HUD.Bottom.Stats.LVL.Val.Text .. " | Time : " .. math.floor(Workspace.DistributedGameTime) .. " / " .. Settings.RejoinTime .. " | Broly Health : " .. math.floor(Workspace.Live["Broly BR"].Humanoid.Health)
 		    Client.PlayerGui.HUD.Bottom.SP.BackgroundColor3 = Color3.new(0, 0, 0)
                 end
             )
@@ -426,33 +426,14 @@ if game.PlaceId == Ids[3] then
     )
     coroutine.resume(brolyhealthDisplay)
 
-    local frameLoop = -- [[ always make a variable so you can insert it in the resume() --]]
-        coroutine.create(
-        function()
-            -- Always wrap a function so the wrap has something to run
-            game:GetService("RunService").RenderStepped:connect(
-                function()
-                    Rootpart.CFrame =
-                        CFrame.new(
-                        -15.7652674,
-                        -126.684319,
-                        -10.7393866,
-                        0.989255607,
-                        0,
-                        0.146196648,
-                        -0,
-                        1.00000012,
-                        -0,
-                        -0.146196648,
-                        0,
-                        0.989255607
-                    )
-                    game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
-                    game:GetService("Workspace").Camera.FieldOfView = 120
-                end
-            )
-        end
-    )
+    local frameLoop = coroutine.create(function()
+        game:GetService("RunService").RenderStepped:connect(function()
+            Rootpart.CFrame = CFrame.new(-15.7652674, -126.684319, -10.7393866, 0.989255607, 0, 0.146196648, -0, 1.00000012, -0, -0.146196648, 0, 0.989255607)
+            game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            game:GetService("Workspace").Camera.FieldOfView = 300
+        end)
+    end)
+    
     coroutine.resume(frameLoop)
 
     local AutoHit =
@@ -493,9 +474,11 @@ if game.PlaceId == Ids[3] then
         print("AutoPunch is false")
     end
     if Settings.DoubleFreeze == true then
-        game:GetService("Workspace").Live[Client.name]:FindFirstChild("True"):Destroy()
-    elseif Settings.DoubleFreeze == false then
-        print("DoubleFreeze is false")
+        if game.Players.LocalPlayer.Character:FindFirstChild("True") then
+            game.Players.LocalPlayer.Character:FindFirstChild("True"):Destroy()
+        elseif Setting.DoubleFreeze == false then
+            print("DoubleFreeze is false")
+        end
     end
     if Settings.TeamDamage == true then
         game:GetService("Workspace").Live[Client.name]:FindFirstChild("team damage"):Destroy()
@@ -603,7 +586,7 @@ if game.PlaceId == Ids[3] then
             end
         end
     end
-   --[[ local ExplosiveWaveEZ =
+   local ExplosiveWaveEZ =
         coroutine.create(
         function()
             game:GetService("RunService").Stepped:Connect(
@@ -625,9 +608,9 @@ if game.PlaceId == Ids[3] then
                 end
             )
         end
-    )]]
+        )
 
-    --coroutine.resume(ExplosiveWaveEZ)
+    coroutine.resume(ExplosiveWaveEZ)
 
     if Settings.AnimateFreeze == true then
         game.Players.LocalPlayer.Character.Humanoid.Animator.Parent = game.Workspace.Live["Broly BR"].Humanoid
@@ -692,7 +675,11 @@ end))
                     v.Name == Move7 or
                     v.Name == Move8 or
                     v.Name == Move9 or
-                    v.Name == Move0
+                    v.Name == Move0 or
+                    v.Name == Move10 or
+                    v.Name == Move11 or
+                    v.Name == Move12 or 
+                    v.Name == Move13
              then
                 v.Parent = Client.Character
                 v:Activate()
